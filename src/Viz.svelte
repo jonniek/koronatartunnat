@@ -128,6 +128,10 @@
 			height: 90vh;
 			top: -27vh;
 		}
+		h1 {
+			font-size: 23px;
+			margin-bottom: 0;
+		}
 		footer {
 			position: static;
 		}
