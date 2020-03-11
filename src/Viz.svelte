@@ -86,7 +86,7 @@
 	}
 
 	form {
-		max-width: 300px;
+		max-width: 400px;
 	}
 
 	input[type="range"] {
