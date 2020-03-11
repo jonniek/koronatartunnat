@@ -1,0 +1,17 @@
+{
+  "devDependencies": {
+    "rollup": "^1.11.0",
+    "rollup-plugin-json": "^4.0.0",
+    "rollup-plugin-node-resolve": "^4.2.3",
+    "rollup-plugin-svelte": "^5.0.3",
+    "rollup-plugin-terser": "^4.0.4",
+    "svelte": "^3.1.0"
+  },
+  "dependencies": {},
+  "scripts": {
+    "build": "npm run build:client && npm run build:ssr && node build",
+    "build:client": "rollup -c rollup.config.js",
+    "build:ssr": "rollup -c rollup.config.ssr.js",
+    "predeploy": "npm run build"
+  }
+}
