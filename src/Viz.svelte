@@ -127,6 +127,7 @@
 			position: relative;
 			height: 90vh;
 			top: -27vh;
+			margin-bottom: -27vh;
 		}
 		h1 {
 			font-size: 23px;
