@@ -87,6 +87,7 @@
 
 	form {
 		max-width: 400px;
+		margin: auto;
 	}
 
 	input[type="range"] {
