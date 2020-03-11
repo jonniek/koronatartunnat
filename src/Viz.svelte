@@ -77,7 +77,7 @@
 		margin-right: auto;
 	}
 
-	aside {
+	header {
 		margin-right: 30px;
 		margin-left: auto;
 		padding: 10px 20px;
@@ -87,6 +87,7 @@
 
 	form {
 		width: 300px;
+		max-width: 95vh;
 	}
 
 	input[type="range"] {
@@ -115,13 +116,17 @@
     color: rgb(78, 150, 184);
 		text-decoration: none;
 	}
-	@media (max-width: 780px) {
-		aside {
+	@media (max-width: 700px) {
+		header {
 			margin: 0 auto;
+			z-index: 1;
+			background: white;
 		}
 		main {
-			height: 80vh;
+			z-index: 0;
 			margin: 0 auto;
+			position: relative;
+			top: -25vh;
 		}
 		footer {
 			position: static;
@@ -131,7 +136,7 @@
 
 
 <noscript>Vaati javascriptin datan hakuun <a href={apiURL}>{apiURL}</a></noscript>
-<aside>
+<header>
 	{#if loaded}
 		<form>
 			<h1>Tartuntoja yhteensä {activeInfections.length}</h1>
@@ -153,7 +158,7 @@
 		<p>{error}</p>
 		<a href={apiURL}>{apiURL}</a>
 	{/if}
-</aside>
+</header>
 <main>
 	<svg height="95%" viewBox="360 0 380 800">
 		{#each districts as district}
