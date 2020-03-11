@@ -1,3 +1,4 @@
 /index.html
 node_modules/
 /bundle.js
+build/*ssr.js

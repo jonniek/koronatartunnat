@@ -86,8 +86,7 @@
 	}
 
 	form {
-		width: 300px;
-		max-width: 95vh;
+		max-width: 300px;
 	}
 
 	input[type="range"] {
@@ -126,7 +125,8 @@
 			z-index: 0;
 			margin: 0 auto;
 			position: relative;
-			top: -25vh;
+			height: 90vh;
+			top: -27vh;
 		}
 		footer {
 			position: static;
