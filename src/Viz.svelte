@@ -1,25 +1,9 @@
 <script>
-	import { onMount } from "svelte";
+	import { onMount } from "svelte"
 	export let geoData
+	export let infections = []
 
-	const apiURL = "https://w3qa5ydb4l.execute-api.eu-west-1.amazonaws.com/prod/finnishCoronaData"
 	const oneDayInMS = 86400000
-
-	let loaded = false
-	let error
-	let infections = []
-
-	onMount(async function() {
-		try {
-			const response = await fetch(apiURL);
-			const data = await response.json();
-			infections = data.confirmed
-			loaded = true
-		} catch(e) {
-			console.error(e)
-			error = e.message
-		}
-	})
 
 	let showAll = false
 	let fromDayN = 14
@@ -44,10 +28,10 @@
 	}, {})
 
 	const getColor = (count, total) => {
-    const relativeCount = count / total * 200
-    const rgbvalue = Math.floor(250 - relativeCount) || 250
-    return `rgb(250, ${rgbvalue}, ${rgbvalue})`
-  }
+		const relativeCount = count / total * 200
+		const rgbvalue = Math.floor(250 - relativeCount) || 250
+		return `rgb(250, ${rgbvalue}, ${rgbvalue})`
+	}
 
 	let districts
 
@@ -110,10 +94,6 @@
 		padding: 5px 15px;
 	}
 
-	.error {
-		color: rgb(163, 67, 55);
-	}
-
 	a {
     color: rgb(78, 150, 184);
 		text-decoration: none;
@@ -145,29 +125,21 @@
 </style>
 
 
-<noscript>Vaati javascriptin datan hakuun <a href={apiURL}>{apiURL}</a></noscript>
 <header>
-	{#if loaded}
-		<form>
-			<h1>Tartuntoja yhteensä {activeInfections.length}</h1>
-			<label>
-				Näytä kaikki tartunnat
-				<input type="checkbox" bind:checked={showAll}>
-			</label>
-			{#if !showAll}
-				<label>Tartunnat viimeiseltä {fromDayN} päivältä</label>
-				<input bind:value={fromDayN} type="range" min={1} max={31} step={1}>
-			{:else}
-				<label>Tartuntatilanne {daysAgo ? `${daysAgo} päivää sitten` : 'nyt'}</label>
-				<input bind:value={daysAgo} type="range" min={0} max={31} step={1}>
-			{/if}
-		</form>
-	{/if}
-	{#if error}
-		<h2 class="error">Yhteys tietokantaan epäonnistui</h2>
-		<p>{error}</p>
-		<a href={apiURL}>{apiURL}</a>
-	{/if}
+	<form>
+		<h1>Tartuntoja yhteensä {activeInfections.length}</h1>
+		<label>
+			Näytä kaikki tartunnat
+			<input type="checkbox" bind:checked={showAll}>
+		</label>
+		{#if !showAll}
+			<label>Tartunnat viimeiseltä {fromDayN} päivältä</label>
+			<input bind:value={fromDayN} type="range" min={1} max={31} step={1}>
+		{:else}
+			<label>Tartuntatilanne {daysAgo ? `${daysAgo} päivää sitten` : 'nyt'}</label>
+			<input bind:value={daysAgo} type="range" min={0} max={31} step={1}>
+		{/if}
+	</form>
 </header>
 <main>
 	<svg height="95%" viewBox="360 0 380 800">
