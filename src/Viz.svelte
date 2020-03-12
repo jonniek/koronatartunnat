@@ -32,6 +32,7 @@
 			const period = fromDayN * oneDayInMS
 			return infectionTime + period > now
 		} else {
+			if (daysAgo == 0) return true // quick fix to timezone issue in API
 			const daysAgoMS = daysAgo * oneDayInMS
 			return now - daysAgoMS > infectionTime
 		}
