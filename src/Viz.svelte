@@ -79,6 +79,7 @@
 	}
 
 	header {
+		min-width: 400px;
 		margin-right: 30px;
 		margin-left: auto;
 		padding: 10px 20px;
@@ -105,7 +106,7 @@
 	footer {
 		position: absolute;
 		bottom: 0;
-		left: 0;
+		right: 0;
 		padding: 5px 15px;
 	}
 
@@ -116,9 +117,11 @@
 	a {
     color: rgb(78, 150, 184);
 		text-decoration: none;
+		margin-right: 10px;
 	}
 	@media (max-width: 700px) {
 		header {
+			min-width: 0;
 			margin: 0 auto;
 			z-index: 1;
 			background: white;
@@ -175,5 +178,6 @@
 	</svg>
 </main>
 <footer>
-	<a href="https://github.com/jonniek/koronatartunnat">github</a>
+	<a target="_blank" rel="noopener" href="https://github.com/jonniek/koronatartunnat">github</a>
+	<a target="_blank" rel="noopener" href="https://github.com/HS-Datadesk/koronavirus-avoindata">Datalähde — Helsingin Sanomat</a>
 </footer>
