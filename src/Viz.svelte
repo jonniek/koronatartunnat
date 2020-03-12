@@ -63,7 +63,7 @@
 	}
 
 	header {
-		min-width: 400px;
+		min-width: 460px;
 		margin-right: 30px;
 		margin-left: auto;
 		padding: 10px 20px;
@@ -72,7 +72,7 @@
 	}
 
 	form {
-		max-width: 500px;
+		width: 100%;
 		margin: auto;
 	}
 
@@ -97,11 +97,11 @@
 	a {
     color: rgb(78, 150, 184);
 		text-decoration: none;
-		margin-right: 10px;
+		margin-right: 20px;
 	}
 	@media (max-width: 700px) {
 		header {
-			min-width: 0;
+			min-width: 100vw;
 			margin: 0 auto;
 			z-index: 1;
 			background: white;
