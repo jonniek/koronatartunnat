@@ -5,14 +5,17 @@
 
 	const oneDayInMS = 86400000
 
-	let showAll = false
+	let showRecent = false
+
 	let fromDayN = 14
-	let daysAgo = 0
+	
+	let daysAgoWithOffset = 1
+	$: daysAgo = daysAgoWithOffset - 1
 
 	$: activeInfections = infections.filter(({ date }) => {
 		const now = Date.now()
 		const infectionTime = new Date(date).getTime()
-		if (!showAll) {
+		if (showRecent) {
 			const period = fromDayN * oneDayInMS
 			return infectionTime + period > now
 		} else {
@@ -63,7 +66,7 @@
 	}
 
 	header {
-		min-width: 460px;
+		min-width: 400px;
 		margin-right: 30px;
 		margin-left: auto;
 		padding: 10px 20px;
@@ -127,17 +130,17 @@
 
 <header>
 	<form>
-		<h1>Tartuntoja yhteensä {activeInfections.length}</h1>
+		<h1>Tartuntoja {activeInfections.length}</h1>
 		<label>
-			Näytä kaikki tartunnat
-			<input type="checkbox" bind:checked={showAll}>
+			Näytä vain uudet tartunnat
+			<input type="checkbox" bind:checked={showRecent}>
 		</label>
-		{#if !showAll}
+		{#if showRecent}
 			<label>Tartunnat viimeiseltä {fromDayN} päivältä</label>
 			<input bind:value={fromDayN} type="range" min={1} max={31} step={1}>
 		{:else}
 			<label>Tartuntatilanne {daysAgo ? `${daysAgo} päivää sitten` : 'nyt'}</label>
-			<input bind:value={daysAgo} type="range" min={0} max={31} step={1}>
+			<input bind:value={daysAgoWithOffset} type="range" min={1} max={32} step={1}>
 		{/if}
 	</form>
 </header>
