@@ -7,21 +7,31 @@
 
 	let showRecent = false
 
-	let fromDayN = 14
+	let fromDaysAgo = 14
 	
-	let daysAgoWithOffset = 1
-	$: daysAgo = daysAgoWithOffset - 1
+	// use +1 offset to fix ssr issue with default 0 value
+	let untilDaysAgoWithOffset = 1
+	$: untilDaysAgo = untilDaysAgoWithOffset - 1
 
 	$: activeInfections = infections.filter(({ date }) => {
-		const now = Date.now()
-		const infectionTime = new Date(date).getTime()
+		const infectionDate = new Date(date)
+
+		// 1 daysAgo is today at 00:00:00
+		const getDateDaysAgo = daysAgo => {
+			const date = new Date(new Date().setDate(new Date().getDate() - daysAgo + 1))
+			date.setHours(0)
+			date.setMinutes(0)
+			date.setSeconds(0)
+			date.setMilliseconds(0)
+			return date
+		}
+
 		if (showRecent) {
-			const period = fromDayN * oneDayInMS
-			return infectionTime + period > now
+			// infections after N days ago
+			return infectionDate > getDateDaysAgo(fromDaysAgo)
 		} else {
-			if (daysAgo == 0) return true // quick fix to timezone issue in API
-			const daysAgoMS = daysAgo * oneDayInMS
-			return now - daysAgoMS > infectionTime
+			// infections before N days ago
+			return getDateDaysAgo(untilDaysAgo) > infectionDate
 		}
 	})
 
@@ -37,7 +47,6 @@
 	}
 
 	let districts
-
 	$: {
 		districts = geoData.map(district => {
 			const infectionCount = infectionsByDistrict[district.name] || 0
@@ -136,11 +145,11 @@
 			<input type="checkbox" bind:checked={showRecent}>
 		</label>
 		{#if showRecent}
-			<label>Tartunnat viimeiseltä {fromDayN} päivältä</label>
-			<input bind:value={fromDayN} type="range" min={1} max={31} step={1}>
+			<label>Tartunnat viimeiseltä {fromDaysAgo} päivältä</label>
+			<input bind:value={fromDaysAgo} type="range" min={1} max={31} step={1}>
 		{:else}
-			<label>Tartuntatilanne {daysAgo ? `${daysAgo} päivää sitten` : 'nyt'}</label>
-			<input bind:value={daysAgoWithOffset} type="range" min={1} max={32} step={1}>
+			<label>Tartuntatilanne {untilDaysAgo ? `${untilDaysAgo} päivää sitten` : 'nyt'}</label>
+			<input bind:value={untilDaysAgoWithOffset} type="range" min={1} max={32} step={1}>
 		{/if}
 	</form>
 </header>
