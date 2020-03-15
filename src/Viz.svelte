@@ -7,7 +7,7 @@
 
 	let showRecent = false
 
-	let fromDaysAgo = 14
+	let fromDaysAgo = 1
 	
 	// use +1 offset to fix ssr issue with default 0 value
 	let untilDaysAgoWithOffset = 1
@@ -145,7 +145,7 @@
 			<input type="checkbox" bind:checked={showRecent}>
 		</label>
 		{#if showRecent}
-			<label>Tartunnat viimeiseltä {fromDaysAgo} päivältä</label>
+			<label>Tartunnat {fromDaysAgo === 1 ? 'tänään' : `viimeiseltä ${fromDaysAgo} päivältä`}</label>
 			<input bind:value={fromDaysAgo} type="range" min={1} max={31} step={1}>
 		{:else}
 			<label>Tartuntatilanne {untilDaysAgo ? `${untilDaysAgo} päivää sitten` : 'nyt'}</label>
