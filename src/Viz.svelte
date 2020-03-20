@@ -36,8 +36,9 @@
 	})
 
 	$: infectionsByDistrict = activeInfections.reduce((total, infection) => {
-		const count = total[infection.healthCareDistrict] || 0
-		return { ...total, [infection.healthCareDistrict]: count + 1 }
+		const district = infection.healthCareDistrict || 'unknown'
+		const count = total[district] || 0
+		return { ...total, [district]: count + 1 }
 	}, {})
 
 	const getColor = (count, total) => {
@@ -84,8 +85,16 @@
 	}
 
 	form {
+		position: relative;
 		width: 100%;
 		margin: auto;
+		padding-bottom: 30px;
+	}
+
+	.unknown {
+		position: absolute;
+		left: 0;
+		bottom: 15px;
 	}
 
 	input[type="range"] {
@@ -150,6 +159,9 @@
 		{:else}
 			<label>Tartuntatilanne {untilDaysAgo ? `${untilDaysAgo} päivää sitten` : 'nyt'}</label>
 			<input bind:value={untilDaysAgoWithOffset} type="range" min={1} max={32} step={1}>
+		{/if}
+		{#if infectionsByDistrict.unknown}
+			<div class="unknown">{infectionsByDistrict.unknown} tartunnalta puuttuu sairaanhoitopiiri</div>
 		{/if}
 	</form>
 </header>
