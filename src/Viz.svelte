@@ -2,9 +2,11 @@
 	import { onMount } from "svelte"
 	export let geoData
 	export let infections = []
+	export let deaths = []
 
 	const oneDayInMS = 86400000
 
+	let showDeaths = false
 	let showRecent = false
 
 	let fromDaysAgo = 1
@@ -13,8 +15,10 @@
 	let untilDaysAgoWithOffset = 1
 	$: untilDaysAgo = untilDaysAgoWithOffset - 1
 
-	$: activeInfections = infections.filter(({ date }) => {
-		const infectionDate = new Date(date)
+	$: events = showDeaths ? deaths : infections
+
+	$: activeEvents = events.filter(({ date }) => {
+		const eventDate = new Date(date)
 
 		// 1 daysAgo is today at 00:00:00
 		const getDateDaysAgo = daysAgo => {
@@ -27,15 +31,15 @@
 		}
 
 		if (showRecent) {
-			// infections after N days ago
-			return infectionDate > getDateDaysAgo(fromDaysAgo)
+			// events after N days ago
+			return eventDate > getDateDaysAgo(fromDaysAgo)
 		} else {
-			// infections before N days ago
-			return getDateDaysAgo(untilDaysAgo) > infectionDate
+			// events before N days ago
+			return getDateDaysAgo(untilDaysAgo) > eventDate
 		}
 	})
 
-	$: infectionsByDistrict = activeInfections.reduce((total, infection) => {
+	$: eventsByDistrict = activeEvents.reduce((total, infection) => {
 		const district = infection.healthCareDistrict || 'unknown'
 		const count = total[district] || 0
 		return { ...total, [district]: count + 1 }
@@ -50,11 +54,11 @@
 	let districts
 	$: {
 		districts = geoData.map(district => {
-			const infectionCount = infectionsByDistrict[district.name] || 0
+			const eventCount = eventsByDistrict[district.name] || 0
 			return {
 				...district,
-				color: getColor(infectionCount, activeInfections.length),
-				count: infectionCount || '',
+				color: getColor(eventCount, activeEvents.length),
+				count: eventCount || '',
 			}
 		})
 	}
@@ -88,13 +92,13 @@
 		position: relative;
 		width: 100%;
 		margin: auto;
-		padding-bottom: 30px;
+		padding-bottom: 20px;
 	}
 
 	.unknown {
 		position: absolute;
 		left: 0;
-		bottom: 15px;
+		bottom: 5px;
 	}
 
 	input[type="range"] {
@@ -148,20 +152,25 @@
 
 <header>
 	<form>
-		<h1>Tartuntoja {activeInfections.length}</h1>
+		<h1>{#if showDeaths}Menehtyneitä{:else}Tartuntoja{/if} {activeEvents.length}</h1>
 		<label>
-			Näytä vain uudet tartunnat
+			Näytä menehtyneet
+			<input type="checkbox" bind:checked={showDeaths}>
+		</label>
+		<label>
+			Näytä viimeaikaiset tapahtumat
 			<input type="checkbox" bind:checked={showRecent}>
 		</label>
+		<br />
 		{#if showRecent}
-			<label>Tartunnat {fromDaysAgo === 1 ? 'tänään' : `viimeiseltä ${fromDaysAgo} päivältä`}</label>
+			<label>{#if showDeaths}Menehtyneet{:else}Tartunnat{/if} {fromDaysAgo === 1 ? 'tänään' : `viimeiseltä ${fromDaysAgo} päivältä`}</label>
 			<input bind:value={fromDaysAgo} type="range" min={1} max={31} step={1}>
 		{:else}
-			<label>Tartuntatilanne {untilDaysAgo ? `${untilDaysAgo} päivää sitten` : 'nyt'}</label>
+			<label>Tilanne {untilDaysAgo ? `${untilDaysAgo} päivää sitten` : 'nyt'}</label>
 			<input bind:value={untilDaysAgoWithOffset} type="range" min={1} max={32} step={1}>
 		{/if}
-		{#if infectionsByDistrict.unknown}
-			<div class="unknown">{infectionsByDistrict.unknown} tartunnalta puuttuu sairaanhoitopiiri</div>
+		{#if eventsByDistrict.unknown}
+			<div class="unknown">{eventsByDistrict.unknown} {#if showDeaths}menehtyneeltä{:else}tartunnalta{/if} puuttuu sairaanhoitopiiri</div>
 		{/if}
 	</form>
 </header>
