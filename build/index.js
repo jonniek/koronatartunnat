@@ -1,14 +1,13 @@
 const fs = require('fs');
 const Viz = require('./Viz-ssr');
-const data = require('../src/data.json');
-const fetch = require('node-fetch');
+const geodata = require('../src/geodata.json');
+const data = require('./apidata.json');
 
 const template = fs.readFileSync('src/index.html', 'utf-8');
 
 const init = async () => {
-	const response = await fetch("https://w3qa5ydb4l.execute-api.eu-west-1.amazonaws.com/prod/finnishCoronaData/v2")
-	const { confirmed, deaths } = await response.json()
-	const { infectedMap, deceasedMap } = data
+	const { confirmed, deaths } = data
+	const { infectedMap, deceasedMap } = geodata
 
 	const { html, css } = Viz.render({
 		infectedMap,
@@ -19,9 +18,9 @@ const init = async () => {
 	
 	const rendered = template
 		.replace('<!-- viz -->', html)
-		.replace('/* css */', css.code);
+		.replace('/* css */', css.code)
 	
-	fs.writeFileSync('index.html', rendered);
+	fs.writeFileSync('index.html', rendered)
 }
 
 init().catch(e => {
