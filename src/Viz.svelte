@@ -1,12 +1,19 @@
 <script>
 	import { onMount } from "svelte"
-	export let geoData
+	export let infectedMap
+	export let deceasedMap
 	export let infections = []
 	export let deaths = []
 
 	const oneDayInMS = 86400000
 
 	let showDeaths = false
+
+	// quick hack because inkscape screwed up the svg unions
+	$: maptransform = showDeaths ? 'matrix(1.0526316,0,0,1.0526316,350,0)' : ''
+	$: selectedMap = showDeaths ? deceasedMap : infectedMap
+	$: districtVariable = showDeaths ? 'area' : 'healthCareDistrict'
+
 	let showRecent = false
 
 	let fromDaysAgo = 1
@@ -40,7 +47,7 @@
 	})
 
 	$: eventsByDistrict = activeEvents.reduce((total, infection) => {
-		const district = infection.healthCareDistrict || 'unknown'
+		const district = infection[districtVariable] || 'unknown'
 		const count = total[district] || 0
 		return { ...total, [district]: count + 1 }
 	}, {})
@@ -53,7 +60,7 @@
 
 	let districts
 	$: {
-		districts = geoData.map(district => {
+		districts = selectedMap.map(district => {
 			const eventCount = eventsByDistrict[district.name] || 0
 			return {
 				...district,
@@ -177,7 +184,7 @@
 <main>
 	<svg height="95%" viewBox="360 0 380 800">
 		{#each districts as district}
-			<path d={district.d} fill={district.color}><title>{district.name}</title></path>
+			<path d={district.d} fill={district.color} transform={maptransform}><title>{district.name}</title></path>
 			<text x={district.x} y={district.y}>{district.count}</text>
 		{/each}
 	</svg>

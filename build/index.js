@@ -8,9 +8,11 @@ const template = fs.readFileSync('src/index.html', 'utf-8');
 const init = async () => {
 	const response = await fetch("https://w3qa5ydb4l.execute-api.eu-west-1.amazonaws.com/prod/finnishCoronaData/v2")
 	const { confirmed, deaths } = await response.json()
+	const { infectedMap, deceasedMap } = data
 
 	const { html, css } = Viz.render({
-		geoData: data,
+		infectedMap,
+		deceasedMap,
 		infections: confirmed,
 		deaths
 	});
