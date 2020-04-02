@@ -3,7 +3,7 @@ import data from './data.json'
 
 const init = async () => {
 	try {
-		const response = await fetch("https://w3qa5ydb4l.execute-api.eu-west-1.amazonaws.com/prod/finnishCoronaData")
+		const response = await fetch("https://w3qa5ydb4l.execute-api.eu-west-1.amazonaws.com/prod/finnishCoronaData/v2")
 		const { confirmed, deaths } = await response.json()
 
 		// TODO hydrate so we don't need to clear dom
