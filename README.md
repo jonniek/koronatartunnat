@@ -15,11 +15,8 @@ The npm build script runs 4 commands.
 4. build
     - server side renders the index.html based on step 1 data and step 3 component
 
-Server side rendered data is updated on build and regulargly through
-a cronjob.
-
 The svg projection was done with d3 but extracted to vanilla svg
 to avoid runtime dependencies. It was further hacked together in inkscape
-to union larger areas together.
+to union larger areas together for death statistics map.
 
 Data is from https://github.com/HS-Datadesk/koronavirus-avoindata
