@@ -162,11 +162,11 @@
 		<h1>{#if showDeaths}Menehtyneitä{:else}Tartuntoja{/if} {activeEvents.length}</h1>
 		<label>
 			Näytä menehtyneet
-			<input type="checkbox" bind:checked={showDeaths}>
+			<input type="checkbox" autocomplete="off" bind:checked={showDeaths}>
 		</label>
 		<label>
 			Näytä viimeaikaiset tapahtumat
-			<input type="checkbox" bind:checked={showRecent}>
+			<input type="checkbox" autocomplete="off" bind:checked={showRecent}>
 		</label>
 		<br />
 		{#if showRecent}
