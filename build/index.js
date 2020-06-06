@@ -13,7 +13,8 @@ const init = async () => {
 		infectedMap,
 		deceasedMap,
 		infections: confirmed,
-		deaths
+		deaths,
+		loading: true,
 	});
 	
 	const rendered = template

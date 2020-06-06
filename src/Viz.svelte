@@ -4,6 +4,7 @@
 	export let deceasedMap
 	export let infections = []
 	export let deaths = []
+	export let loading = false
 
 	const oneDayInMS = 86400000
 
@@ -102,7 +103,7 @@
 		padding-bottom: 20px;
 	}
 
-	.unknown {
+	.unknown, .loading {
 		position: absolute;
 		left: 0;
 		bottom: 5px;
@@ -162,21 +163,23 @@
 		<h1>{#if showDeaths}Menehtyneitä{:else}Tartuntoja{/if} {activeEvents.length}</h1>
 		<label>
 			Näytä menehtyneet
-			<input type="checkbox" autocomplete="off" bind:checked={showDeaths}>
+			<input disabled={loading} type="checkbox" autocomplete="off" bind:checked={showDeaths}>
 		</label>
 		<label>
 			Näytä viimeaikaiset tapahtumat
-			<input type="checkbox" autocomplete="off" bind:checked={showRecent}>
+			<input disabled={loading} type="checkbox" autocomplete="off" bind:checked={showRecent}>
 		</label>
 		<br />
 		{#if showRecent}
 			<label>{#if showDeaths}Menehtyneet{:else}Tartunnat{/if} {fromDaysAgo === 1 ? 'tänään' : `viimeiseltä ${fromDaysAgo} päivältä`}</label>
-			<input bind:value={fromDaysAgo} type="range" min={1} max={31} step={1}>
+			<input disabled={loading} bind:value={fromDaysAgo} type="range" min={1} max={31} step={1}>
 		{:else}
 			<label>Tilanne {untilDaysAgo ? `${untilDaysAgo} päivää sitten` : 'nyt'}</label>
-			<input bind:value={untilDaysAgoWithOffset} type="range" min={1} max={32} step={1}>
+			<input disabled={loading} bind:value={untilDaysAgoWithOffset} type="range" min={1} max={32} step={1}>
 		{/if}
-		{#if eventsByDistrict.unknown}
+		{#if loading}
+			<div class="loading">Ladataan päivitettyjä tietoja...</div>
+		{:else if eventsByDistrict.unknown}
 			<div class="unknown">{eventsByDistrict.unknown} {#if showDeaths}menehtyneeltä{:else}tartunnalta{/if} puuttuu sairaanhoitopiiri</div>
 		{/if}
 	</form>
