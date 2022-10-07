@@ -7,7 +7,7 @@
 	export let loading = false
 
   const frozenStartDate = 1580137200000
-	let daysSinceStart = 1
+	let daysSinceStart = 60
 
 	$: frozenDate = frozenStartDate + (daysSinceStart * 24 * 60 * 60 * 1000)
 
