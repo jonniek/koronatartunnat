@@ -6,6 +6,11 @@
 	export let deaths = []
 	export let loading = false
 
+  const frozenStartDate = 1580137200000
+	let daysSinceStart = 1
+
+	$: frozenDate = frozenStartDate + (daysSinceStart * 24 * 60 * 60 * 1000)
+
 	const oneDayInMS = 86400000
 
 	let showDeaths = false
@@ -30,7 +35,7 @@
 
 		// 1 daysAgo is today at 00:00:00
 		const getDateDaysAgo = daysAgo => {
-			const date = new Date(new Date().setDate(new Date().getDate() - daysAgo + 1))
+			const date = new Date(new Date(frozenDate).setDate(new Date(frozenDate).getDate() - daysAgo + 1))
 			date.setHours(0)
 			date.setMinutes(0)
 			date.setSeconds(0)
@@ -111,7 +116,6 @@
 
 	input[type="range"] {
 		width: 100%;
-		direction: rtl;
 		padding-bottom: 15px;
 	}
 
@@ -160,23 +164,14 @@
 
 <header>
 	<form>
-		<h1>{#if showDeaths}Menehtyneitä{:else}Tartuntoja{/if} {activeEvents.length}</h1>
+		<h1>{#if showDeaths}Deceased{:else}Infections{/if} {activeEvents.length}</h1>
 		<label>
-			Näytä menehtyneet
+			Show deceased
 			<input disabled={loading} type="checkbox" autocomplete="off" bind:checked={showDeaths}>
 		</label>
-		<label>
-			Näytä viimeaikaiset tapahtumat
-			<input disabled={loading} type="checkbox" autocomplete="off" bind:checked={showRecent}>
-		</label>
 		<br />
-		{#if showRecent}
-			<label>{#if showDeaths}Menehtyneet{:else}Tartunnat{/if} {fromDaysAgo === 1 ? 'tänään' : `viimeiseltä ${fromDaysAgo} päivältä`}</label>
-			<input disabled={loading} bind:value={fromDaysAgo} type="range" min={1} max={31} step={1}>
-		{:else}
-			<label>Tilanne {untilDaysAgo ? `${untilDaysAgo} päivää sitten` : 'nyt'}</label>
-			<input disabled={loading} bind:value={untilDaysAgoWithOffset} type="range" min={1} max={32} step={1}>
-		{/if}
+		<label>{daysSinceStart} days since first infection</label>
+		<input disabled={loading} bind:value={daysSinceStart} type="range" min={1} max={350} step={1}>
 		{#if loading}
 			<div class="loading">Ladataan päivitettyjä tietoja...</div>
 		{:else if eventsByDistrict.unknown}
@@ -194,5 +189,5 @@
 </main>
 <footer>
 	<a target="_blank" rel="noopener" href="https://github.com/jonniek/koronatartunnat">github</a>
-	<a target="_blank" rel="noopener" href="https://github.com/HS-Datadesk/koronavirus-avoindata">Datalähde — Helsingin Sanomat</a>
+	<a target="_blank" rel="noopener" href="https://github.com/HS-Datadesk/koronavirus-avoindata">Datasource — Helsingin Sanomat</a>
 </footer>

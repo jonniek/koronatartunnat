@@ -14,7 +14,7 @@ const init = async () => {
 		deceasedMap,
 		infections: confirmed,
 		deaths,
-		loading: true,
+		loading: false, // app will no longer call API
 	});
 	
 	const rendered = template

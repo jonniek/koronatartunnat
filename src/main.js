@@ -6,13 +6,14 @@ const init = async () => {
 	let data = apidata
 
 	// try update to realtime data
+	/* realtime API is not responding anymore
 	try {
-		const response = await fetch("https://w3qa5ydb4l.execute-api.eu-west-1.amazonaws.com/prod/finnishCoronaData/v2")
+	const response = await fetch("https://w3qa5ydb4l.execute-api.eu-west-1.amazonaws.com/prod/finnishCoronaData/v2")
 		data = await response.json()
 	} catch (e) {
 		console.error(e)
 		alert("Onglema tietokantayhteydessä. Data ei ole välttämättä ajankohtaista, yritä päivittää sivu.")
-	}
+	}*/
 
 	const { confirmed, deaths } = data
 	const { infectedMap, deceasedMap } = geodata
