@@ -143,6 +143,12 @@
 			z-index: 1;
 			background: white;
 		}
+		@media (prefers-color-scheme:dark) {
+			header {
+				color: #ece8de;
+				background: #31383e;
+			}
+		}		
 		main {
 			z-index: 0;
 			margin: 0 auto;
