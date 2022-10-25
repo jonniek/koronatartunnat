@@ -146,7 +146,7 @@
 		@media (prefers-color-scheme:dark) {
 			header {
 				color: #ece8de;
-				background: #31383e;
+				background: #1c2024;
 			}
 		}		
 		main {
