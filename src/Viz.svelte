@@ -141,18 +141,17 @@
 			min-width: 100vw;
 			margin: 0 auto;
 			z-index: 1;
-			background: white;
+			background: #fefefe;
 		}
 		@media (prefers-color-scheme:dark) {
 			header {
-				color: #ece8de;
 				background: #1c2024;
 			}
 		}
-		[data-theme="light"] header {
+		:global(html)[data-theme="light"] header {
 			background: #fefefe;
 		}
-		[data-theme="dark"] header {
+		:global(html)[data-theme="dark"] header {
 			background: #1c2024;
 		}
 		main {
