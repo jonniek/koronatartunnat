@@ -148,7 +148,13 @@
 				color: #ece8de;
 				background: #1c2024;
 			}
-		}		
+		}
+		[data-theme="light"] header {
+			background: #fefefe;
+		}
+		[data-theme="dark"] header {
+			background: #1c2024;
+		}
 		main {
 			z-index: 0;
 			margin: 0 auto;
